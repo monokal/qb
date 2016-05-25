@@ -16,7 +16,7 @@ __all__ = []
 config_path = "config.yaml"
 
 
-class QbClient(object):
+class Client(object):
     """ Class to wrap qb client functionality. """
 
     def __init__(self):
@@ -46,5 +46,23 @@ class QbClient(object):
             description="A command-line client to manage qb environments.",
         )
 
-        # Create a sub-parser for pluslet sub-commands.
+        # Cr    eate a sub-parser for pluslet sub-commands.
         subparsers = parser.add_subparsers()
+
+
+class Machine(object):
+    """ Class to manage a qb machine. """
+
+    def create(self):
+        """ Function to create a qb machine. """
+
+        pass
+
+
+class Container(object):
+    """ Class to manage a qb container. """
+
+    def create(self):
+        """ Function to create a qb container. """
+
+        pass
