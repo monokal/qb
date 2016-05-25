@@ -1,2 +1,2 @@
 # qb
-Portable system container engine.
+qb (pronounced "cube") is cross-platform Docker-like toolkit for system containers.
