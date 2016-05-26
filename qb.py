@@ -27,8 +27,7 @@ class Client(object):
         """ Load config, configure logging, parse command-line arguments,
             provide usage and invoke functions. """
 
-        # Have our own logger capture warnings so we can format them
-        # appropriately.
+        # Have our own logger capture warnings so we can format them.
         logging.captureWarnings(True)
 
         self.p = logging.getLogger('qb')
@@ -53,14 +52,31 @@ class Client(object):
         # Create a sub-parser for qb sub-commands.
         subparsers = parser.add_subparsers()
 
-        # qb command sub-parsers.
+        # qb machine sub-parser.
         parser_machine = subparsers.add_parser('machine',
                                                aliases=['m'],
                                                help="Manage a qb machine.")
 
+        group_machine = parser_machine.add_mutually_exclusive_group(
+            required=True)
+
+        group_machine.add_argument('--create', help="Create a qb machine.")
+        group_machine.add_argument('--start', help="Start a qb machine.")
+        group_machine.add_argument('--stop', help="Stop a qb machine.")
+        group_machine.add_argument('--remove', help="Remove a qb machine.")
+
+        # qb container sub-parser.
         parser_container = subparsers.add_parser('container',
                                                aliases=['c'],
                                                help="Manage a qb container.")
+
+        group_container = parser_container.add_mutually_exclusive_group(
+            required=True)
+
+        group_container.add_argument('--create', help="Create a qb container.")
+        group_container.add_argument('--start', help="Start a qb container.")
+        group_container.add_argument('--stop', help="Stop a qb container.")
+        group_container.add_argument('--remove', help="Remove a qb machine.")
 
         # Create a Config object and load configuration from file.
         config = Config()
@@ -70,10 +86,10 @@ class Client(object):
         parser_machine.set_defaults(func=_Machine)
         parser_container.set_defaults(func=_Container)
 
-        # Print help if no arg was provided, otherwise parse and call the
+        # Print help if no arg was provided, otherwise parse args and call the
         # relevant function.
         if len(sys.argv) <= 1:
-            parser.print_usage()
+            parser.print_help()
             sys.exit(1)
         else:
             args = parser.parse_args()
@@ -85,13 +101,11 @@ class Client(object):
 class _Machine(object):
     """ Class to manage a qb machine. """
 
-    def __init__(self, arg):
+    def __init__(self, args):
         """ Function to manage qb machine operations. """
 
         # Use the logger object created by Client.
         self.p = logging.getLogger('qb')
-
-        self.p.debug("In _Machine __init__ and I got %s" % arg)
 
     def create(self):
         """ Function to create a qb machine. """
@@ -123,8 +137,6 @@ class _Container(object):
         # Use the logger object created by Client.
         self.p = logging.getLogger('qb')
 
-        self.p.debug("In _Container __init__")
-
     def create(self):
         """ Function to create a qb container. """
 
@@ -145,3 +157,6 @@ class _Container(object):
 
         pass
 
+
+if __name__ == "__main__":
+    Client()
