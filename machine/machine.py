@@ -13,7 +13,7 @@ class Machine(object):
     def __init__(self):
         """ Configure logging. """
 
-        # Use the logger object created by PlusletClient.
+        # Use the logger object created by Client.
         self.p = logging.getLogger('qb')
 
         # Create a Vagrant object.

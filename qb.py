@@ -50,64 +50,48 @@ class Client(object):
             description="A command-line client to manage qb environments.",
         )
 
-        sp = parser.add_subparsers(dest='cmdstr')
+        # Create a sub-parser for qb sub-commands.
+        subparsers = parser.add_subparsers()
 
-        sp1 = sp.add_parser('machine')
-        sp1.set_defaults(cmd=lambda: '_Machine')
+        # qb command sub-parsers.
+        parser_machine = subparsers.add_parser('machine',
+                                               aliases=['m'],
+                                               help="Manage a qb machine.")
 
-        sp2 = sp.add_parser('container')
-        sp2.set_defaults(cmd=lambda: '_Container')
+        parser_container = subparsers.add_parser('container',
+                                               aliases=['c'],
+                                               help="Manage a qb container.")
 
-        parser.parse_args(['machine']).cmd()
+        # Create a Config object and load configuration from file.
+        config = Config()
+        self.config = config.load(config_path)
 
-        # # Create a sub-parser for qb sub-commands.
-        # subparsers = parser.add_subparsers()
-        #
-        # # qb machine sub-parser.
-        # parser_machine = subparsers.add_parser('machine',
-        #                                        aliases=['m'],
-        #                                        help="Manage a qb machine.")
-        #
-        # parser_machine.add_argument('create', help="Create a qb machine.")
-        # parser_machine.add_argument('start', help="Start a qb machine.")
-        # parser_machine.add_argument('stop', help="Stop a qb machine.")
-        # parser_machine.add_argument('remove', help="Remove a qb machine.")
-        #
-        # # qb container sub-parser.
-        # parser_container = subparsers.add_parser('container',
-        #                                        aliases=['c'],
-        #                                        help="Manage a qb container.")
-        #
-        # parser_container.add_argument('create', help="Create a qb container.")
-        # parser_container.add_argument('start', help="Start a qb container.")
-        # parser_container.add_argument('stop', help="Stop a qb container.")
-        # parser_container.add_argument('remove', help="Remove a qb container.")
-        #
-        # # Create a Config object.
-        # config = Config()
-        #
-        # # Load configuration from file and make it available globally.
-        # self.config = config.load(config_path)
-        #
-        # # Set functions for the sub-parsers to call.
-        # parser_machine.set_defaults(func=_Machine)
-        # parser_container.set_defaults(func=_Container)
-        #
-        # args = parser.parse_args()
-        #
-        # print(args)
+        # Set functions for the sub-parsers to call.
+        parser_machine.set_defaults(func=_Machine)
+        parser_container.set_defaults(func=_Container)
+
+        # Print help if no arg was provided, otherwise parse and call the
+        # relevant function.
+        if len(sys.argv) <= 1:
+            parser.print_usage()
+            sys.exit(1)
+        else:
+            args = parser.parse_args()
+            args.func(args)
+
+        sys.exit(0)
 
 
 class _Machine(object):
     """ Class to manage a qb machine. """
 
-    def __init__(self):
+    def __init__(self, arg):
         """ Function to manage qb machine operations. """
 
         # Use the logger object created by Client.
         self.p = logging.getLogger('qb')
 
-        self.p.debug("In _Machine __init__")
+        self.p.debug("In _Machine __init__ and I got %s" % arg)
 
     def create(self):
         """ Function to create a qb machine. """
