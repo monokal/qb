@@ -1,0 +1,18 @@
+---
+
+# qb container config.
+container:
+
+  # LXD REST API config.
+  lxd_api:
+    url:  "https://127.0.0.1:8443/1.0"
+    cert: "client.crt"
+    key:  "client.key"
+
+  # qb metadata.
+  metadata:
+    path: ""
+
+# qb machine config.
+machine:
+  abc: ""
