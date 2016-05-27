@@ -19,9 +19,7 @@ class Machine(object):
         # Create a Vagrant object.
         self.v = vagrant.Vagrant()
 
-    def create(self, name, image):
+    def create(self):
         """ Create a qb machine. """
-
-        self.p.debug("Creating \"%s\" from the \"%s\" image..." % (name, image))
 
         # self.v.up(vm_name="%s" % args.NAME)

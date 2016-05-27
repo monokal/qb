@@ -66,57 +66,60 @@ class Container(object):
 
         sys.exit(1)
 
-    def create(self, url, cert, key, name, image):
+    #def create(self, url, cert, key, name, image):
+    def create(self, name, image):
         """ Create a qb container. """
 
-        # TODO: Check to see if a container by "name" already exists.
+        self.p.debug("Creating \"%s\" from the \"%s\" image..." % (name, image))
 
-        headers = {'Content-Type': 'application/json'}
-
-        # TODO: Pull payloads from Git using "name".
-        # Create the LXD API JSON payload.
-        payload = {
-            'name': '%s' % name,
-            'architecture': 'x86_64',
-            'profiles': [
-                'default'
-            ],
-            'ephemeral': False,
-            'config': {
-                'limits.cpu': '2'
-            },
-            'source': {
-                'type': 'image',
-                'mode': 'pull',
-                'protocol': 'simplestreams',
-                'server': 'https://cloud-images.ubuntu.com/releases',
-                'alias': '14.04'
-            }
-        }
-
-        # Parse the payload to JSON.
-        try:
-            payload_json = json.dumps(payload)
-
-        except:
-            self.p.error("Error parsing LXD API payload to JSON.")
-            sys.exit(1)
-
-        # Execute the LXD API POST request.
-        try:
-            response = requests.post(
-                "%s/containers" % url,
-                verify=False,
-                cert=(cert, key),
-                data=payload_json,
-                headers=headers
-            )
-
-        except:
-            self.p.error('Failed to perform HTTP POST to LXD API.')
-            sys.exit(1)
-
-        self.check_lxd_status(response)
-
-        self.p.info(
-            "Created %s using the %s image." % (name, image))
+        # # TODO: Check to see if a container by "name" already exists.
+        #
+        # headers = {'Content-Type': 'application/json'}
+        #
+        # # TODO: Pull payloads from Git using "name".
+        # # Create the LXD API JSON payload.
+        # payload = {
+        #     'name': '%s' % name,
+        #     'architecture': 'x86_64',
+        #     'profiles': [
+        #         'default'
+        #     ],
+        #     'ephemeral': False,
+        #     'config': {
+        #         'limits.cpu': '2'
+        #     },
+        #     'source': {
+        #         'type': 'image',
+        #         'mode': 'pull',
+        #         'protocol': 'simplestreams',
+        #         'server': 'https://cloud-images.ubuntu.com/releases',
+        #         'alias': '14.04'
+        #     }
+        # }
+        #
+        # # Parse the payload to JSON.
+        # try:
+        #     payload_json = json.dumps(payload)
+        #
+        # except:
+        #     self.p.error("Error parsing LXD API payload to JSON.")
+        #     sys.exit(1)
+        #
+        # # Execute the LXD API POST request.
+        # try:
+        #     response = requests.post(
+        #         "%s/containers" % url,
+        #         verify=False,
+        #         cert=(cert, key),
+        #         data=payload_json,
+        #         headers=headers
+        #     )
+        #
+        # except:
+        #     self.p.error('Failed to perform HTTP POST to LXD API.')
+        #     sys.exit(1)
+        #
+        # self.check_lxd_status(response)
+        #
+        # self.p.info(
+        #     "Created %s using the %s image." % (name, image))

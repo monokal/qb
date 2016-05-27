@@ -98,8 +98,8 @@ class Client(object):
 
         # qb container commands.
         group_container.add_argument('--create',
-                                     nargs=1,
-                                     metavar='NAME',
+                                     nargs=2,
+                                     metavar=('NAME', 'IMAGE'),
                                      help="Create a qb container.")
 
         group_container.add_argument('--start',
@@ -154,14 +154,8 @@ class _Machine(object):
         # Create a Machine instance.
         self.machine = Machine()
 
-        # Invoke the required function.
-        if args.create is not None:
-            self.create(args.create, 'testImage')
-
     def create(self, name, image):
         """ Function to create a qb machine. """
-
-        self.machine.create(name, image)
 
     def start(self):
         """ Start a qb machine. """
@@ -188,12 +182,30 @@ class _Container(object):
         # Use the logger object created by Client.
         self.p = logging.getLogger('qb')
 
-        self.p.debug(args)
+        # Create a Machine instance.
+        self.container = Container()
 
-    def create(self):
+        # Invoke the required function.
+        if args.create is not None:
+            self.create(args.create[0], args.create[1])
+
+        elif args.start is not None:
+            pass
+
+        elif args.stop is not None:
+            pass
+
+        elif args.remove is not None:
+            pass
+
+        else:
+            self.p.error("Error invoking function.")
+            sys.exit(1)
+
+    def create(self, name, image):
         """ Function to create a qb container. """
 
-        pass
+        self.container.create(name, image)
 
     def start(self):
         """ Start a qb container. """
