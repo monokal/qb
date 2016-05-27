@@ -7,8 +7,8 @@ import logging.handlers
 import sys
 
 from client.config import Config
-from machine.machine import Machine
 from container.container import Container
+from machine.machine import Machine
 
 __author__ = "Daniel Middleton"
 __email__ = "d@monokal.io"
