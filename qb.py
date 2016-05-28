@@ -66,8 +66,8 @@ class Client(object):
             required=True)
 
         # qb machine commands.
-        # TODO: Maybe generate the below args by looping through a FUNC_DICT as
-        # there's a fair amount of duplication.
+        # TODO: Maybe generate the below args by iterating through a
+        # FUNC_DICT as there's a fair amount of duplication.
         group_machine.add_argument('--create',
                                    nargs=1,
                                    metavar='NAME',
@@ -190,13 +190,13 @@ class _Container(object):
             self.create(args.create[0], args.create[1])
 
         elif args.start is not None:
-            pass
+            self.start(args.start[0])
 
         elif args.stop is not None:
-            pass
+            self.stop(args.stop[0])
 
         elif args.remove is not None:
-            pass
+            self.remove(args.remove[0])
 
         else:
             self.p.error("Error invoking function.")
@@ -207,20 +207,20 @@ class _Container(object):
 
         self.container.create(name, image)
 
-    def start(self):
+    def start(self, name):
         """ Start a qb container. """
 
-        pass
+        self.container.start(name)
 
-    def stop(self):
+    def stop(self, name):
         """ Stop a qb container. """
 
-        pass
+        self.container.stop(name)
 
-    def remove(self):
+    def remove(self, name):
         """ Remove a qb container. """
 
-        pass
+        self.container.remove(name)
 
 
 if __name__ == "__main__":
