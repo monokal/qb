@@ -21,7 +21,7 @@ class Container(object):
         self.cert = cert
         self.key = key
 
-        self.p.debug("Got container config:\n"
+        self.p.debug("Using container config:\n"
                      "     URL: %s\n"
                      "     CERT: %s\n"
                      "     KEY: %s" % (self.url, self.cert, self.key))
@@ -62,11 +62,11 @@ class Container(object):
 
         # 100 - 199: Resource state (started, stopped, ready, etc).
         if 100 <= status_code <= 199:
-            return True
+            return
 
         # 200 - 399: Positive result.
         elif 200 <= status_code <= 399:
-            return True
+            return
 
         # Log and exit on any failure or unexpected response.
         # 400 - 599: Negative result.
@@ -79,13 +79,16 @@ class Container(object):
     def create(self, name, image):
         """ Create a qb container. """
 
-        self.p.debug("Creating \"%s\" from the \"%s\" image..." % (name, image))
-
         # TODO: Check to see if a container by "name" already exists.
+        # TODO: Check to see if the payload exists.
+        # TODO: Check to see if the image defined in the payload exists.
+        # TODO: A mechanism to check system resources in Machine are suitable.
+
+        self.p.debug("Creating \"%s\" from the \"%s\" image." % (name, image))
 
         headers = {'Content-Type': 'application/json'}
 
-        # TODO: Pull payloads from Git using "name".
+        # TODO: Pull the payload JSON from Git (or a DB?) based on 'image'.
         # Create the LXD API JSON payload.
         payload = {
             'name': '%s' % name,
@@ -117,9 +120,9 @@ class Container(object):
         # Execute the LXD API POST request.
         try:
             response = requests.post(
-                "%s/containers" % url,
+                "%s/containers" % self.url,
                 verify=False,
-                cert=(cert, key),
+                cert=(self.cert, self.key),
                 data=payload_json,
                 headers=headers
             )
@@ -132,3 +135,18 @@ class Container(object):
 
         self.p.info(
             "Created %s using the %s image." % (name, image))
+
+    def start(self, name):
+        """ Start a qb container. """
+
+        pass
+
+    def stop(self, name):
+        """ Stop a qb container. """
+
+        pass
+
+    def remove(self, name):
+        """ Remove a qb container. """
+
+        pass

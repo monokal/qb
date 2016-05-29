@@ -19,6 +19,7 @@ __all__ = []
 # Path to the qb client config file.
 config_path = "config.yaml"
 
+
 class Client(object):
     """ Class to wrap qb client functionality. """
 
@@ -116,10 +117,6 @@ class Client(object):
                                      metavar='NAME',
                                      help="Remove a qb container.")
 
-        # Create a Config instance and load configuration from file.
-        config = Config()
-        self.config = config.load(config_path)
-
         # Set functions for the sub-parsers to call.
         parser_machine.set_defaults(func=_Machine)
         parser_container.set_defaults(func=_Container)
@@ -135,6 +132,10 @@ class Client(object):
             if args.debug:
                 self.p.setLevel(logging.DEBUG)
                 self.p.debug("Debug mode is on.")
+
+            # Create a Config instance and load configuration from file.
+            config = Config()
+            self.config = config.load(config_path)
 
             # Invoke the required function, passing it the parsed arguments
             # and qb config.
@@ -191,9 +192,11 @@ class _Container(object):
         # Create a Container instance.
         self.container = Container(self.url, self.cert, self.key)
 
-        # Invoke the required function.
+        # Invoke the required function based on the provided args.
+        # TODO: Is there a better way to do this?
         if args.create is not None:
-            self.create(args.create[0], args.create[1])
+            self.create(args.create[0], # Name.
+                        args.create[1]) # Image.
 
         elif args.start is not None:
             self.start(args.start[0])
