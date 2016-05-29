@@ -195,8 +195,8 @@ class _Container(object):
         # Invoke the required function based on the provided args.
         # TODO: Is there a better way to do this?
         if args.create is not None:
-            self.create(args.create[0], # Name.
-                        args.create[1]) # Image.
+            self.create(args.create[0],  # Name.
+                        args.create[1])  # Image.
 
         elif args.start is not None:
             self.start(args.start[0])
