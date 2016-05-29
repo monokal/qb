@@ -19,7 +19,6 @@ __all__ = []
 # Path to the qb client config file.
 config_path = "config.yaml"
 
-
 class Client(object):
     """ Class to wrap qb client functionality. """
 
@@ -122,8 +121,8 @@ class Client(object):
         self.config = config.load(config_path)
 
         # Set functions for the sub-parsers to call.
-        parser_machine.set_defaults(func=_Machine(self.config))
-        parser_container.set_defaults(func=_Container(self.config))
+        parser_machine.set_defaults(func=_Machine)
+        parser_container.set_defaults(func=_Container)
 
         # Print help if no arg was provided, otherwise parse args and call the
         # relevant function.
@@ -137,15 +136,17 @@ class Client(object):
                 self.p.setLevel(logging.DEBUG)
                 self.p.debug("Debug mode is on.")
 
-            args.func(args)
+            # Invoke the required function, passing it the parsed arguments
+            # and qb config.
+            args.func(args, self.config)
 
         sys.exit(0)
 
 
-class _Machine(object, config):
+class _Machine(object):
     """ Class to wrap qb machine functionality. """
 
-    def __init__(self, args):
+    def __init__(self, args, config):
         """ Function to manage qb machine operations. """
 
         # Use the logger object created by Client.
@@ -173,17 +174,22 @@ class _Machine(object, config):
         pass
 
 
-class _Container(object, config):
+class _Container(object):
     """ Class to wrap qb container functionality. """
 
-    def __init__(self, args):
+    def __init__(self, args, config):
         """ Function to manage qb container operations. """
 
         # Use the logger object created by Client.
         self.p = logging.getLogger('qb')
 
-        # Create a Machine instance.
-        self.container = Container()
+        # Pull out the relevant values from config.
+        self.url = config['container']['lxd_api']['url']
+        self.cert = config['container']['lxd_api']['cert']
+        self.key = config['container']['lxd_api']['key']
+
+        # Create a Container instance.
+        self.container = Container(self.url, self.cert, self.key)
 
         # Invoke the required function.
         if args.create is not None:

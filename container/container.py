@@ -16,9 +16,15 @@ class Container(object):
         # Use the logger object created by Client.
         self.p = logging.getLogger('qb')
 
+        # Make config available to functions.
         self.url = url
         self.cert = cert
         self.key = key
+
+        self.p.debug("Got container config:\n"
+                     "     URL: %s\n"
+                     "     CERT: %s\n"
+                     "     KEY: %s" % (self.url, self.cert, self.key))
 
     def check_http_status(self, response):
         """ Ensure a generic HTTP request status is OK. """
@@ -70,7 +76,7 @@ class Container(object):
 
         sys.exit(1)
 
-    def create(self, url, cert, key, name, image):
+    def create(self, name, image):
         """ Create a qb container. """
 
         self.p.debug("Creating \"%s\" from the \"%s\" image..." % (name, image))
