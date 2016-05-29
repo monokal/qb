@@ -122,8 +122,8 @@ class Client(object):
         self.config = config.load(config_path)
 
         # Set functions for the sub-parsers to call.
-        parser_machine.set_defaults(func=_Machine)
-        parser_container.set_defaults(func=_Container)
+        parser_machine.set_defaults(func=_Machine(self.config))
+        parser_container.set_defaults(func=_Container(self.config))
 
         # Print help if no arg was provided, otherwise parse args and call the
         # relevant function.
@@ -142,7 +142,7 @@ class Client(object):
         sys.exit(0)
 
 
-class _Machine(object):
+class _Machine(object, config):
     """ Class to wrap qb machine functionality. """
 
     def __init__(self, args):
@@ -173,7 +173,7 @@ class _Machine(object):
         pass
 
 
-class _Container(object):
+class _Container(object, config):
     """ Class to wrap qb container functionality. """
 
     def __init__(self, args):
