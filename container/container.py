@@ -26,6 +26,9 @@ class Container(object):
                      "     CERT: %s\n"
                      "     KEY: %s" % (self.url, self.cert, self.key))
 
+        # Define the HTTP headers here as they're common across all API calls.
+        self.headers = {'Content-Type': 'application/json'}
+
     def check_http_status(self, response):
         """ Ensure a generic HTTP request status is OK. """
 
@@ -86,8 +89,6 @@ class Container(object):
 
         self.p.debug("Creating \"%s\" from the \"%s\" image." % (name, image))
 
-        headers = {'Content-Type': 'application/json'}
-
         # TODO: Pull the payload JSON from Git (or a DB?) based on 'image'.
         # Create the LXD API JSON payload.
         payload = {
@@ -124,7 +125,7 @@ class Container(object):
                 verify=False,
                 cert=(self.cert, self.key),
                 data=payload_json,
-                headers=headers
+                headers=self.headers
             )
 
         except:
@@ -139,14 +140,14 @@ class Container(object):
     def start(self, name):
         """ Start a qb container. """
 
-        pass
+        self.p.debug("Starting \"%s\"." % name)
 
     def stop(self, name):
         """ Stop a qb container. """
 
-        pass
+        self.p.debug("Stopping \"%s\"." % name)
 
     def remove(self, name):
         """ Remove a qb container. """
 
-        pass
+        self.p.debug("Removing \"%s\"." % name)

@@ -17,7 +17,24 @@ class Machine(object):
         # Create a Vagrant object.
         self.v = vagrant.Vagrant()
 
-    def create(self):
+    def create(self, name):
         """ Create a qb machine. """
 
+        self.p.debug("Creating \"%s\"." % name)
+
         # self.v.up(vm_name="%s" % args.NAME)
+
+    def start(self, name):
+        """ Start a qb machine. """
+
+        self.p.debug("Starting \"%s\"." % name)
+
+    def stop(self, name):
+        """ Stop a qb machine. """
+
+        self.p.debug("Stopping \"%s\"." % name)
+
+    def remove(self, name):
+        """ Remove a qb machine. """
+
+        self.p.debug("Removing \"%s\"." % name)

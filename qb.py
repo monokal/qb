@@ -153,26 +153,48 @@ class _Machine(object):
         # Use the logger object created by Client.
         self.p = logging.getLogger('qb')
 
+        # Pull out the relevant values from config.
+        # self.url = config['machine']
+
         # Create a Machine instance.
         self.machine = Machine()
 
-    def create(self, name, image):
+        # Invoke the required function based on the provided args.
+        if args.create is not None:
+            self.create(args.create[0])
+
+        elif args.start is not None:
+            self.start(args.start[0])
+
+        elif args.stop is not None:
+            self.stop(args.stop[0])
+
+        elif args.remove is not None:
+            self.remove(args.remove[0])
+
+        else:
+            self.p.error("Error invoking function.")
+            sys.exit(1)
+
+    def create(self, name):
         """ Function to create a qb machine. """
 
-    def start(self):
+        self.machine.create(name)
+
+    def start(self, name):
         """ Start a qb machine. """
 
-        pass
+        self.machine.start(name)
 
-    def stop(self):
+    def stop(self, name):
         """ Stop a qb machine. """
 
-        pass
+        self.machine.stop(name)
 
-    def remove(self):
+    def remove(self, name):
         """ Remove a qb machine. """
 
-        pass
+        self.machine.remove(name)
 
 
 class _Container(object):
@@ -193,7 +215,6 @@ class _Container(object):
         self.container = Container(self.url, self.cert, self.key)
 
         # Invoke the required function based on the provided args.
-        # TODO: Is there a better way to do this?
         if args.create is not None:
             self.create(args.create[0],  # Name.
                         args.create[1])  # Image.

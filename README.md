@@ -7,11 +7,20 @@ qb (pronounced "*cube*") is a cross-platform toolkit for **system containers** i
 ```qb``` provides Docker-like functionality but is different in that it utilises **system containers**, meaning you don't need to choose a single process to wrap, the container boots all of the services you'd expect from a regular Linux distribution.
 
 ### Tools
-- qb machine
-- qb container
-- qb registry
-- qb network
-- qb compose
+#### qb machine
+Vagrant
+
+#### qb container
+LXD
+
+#### qb registry
+LXD Image Store
+
+#### qb network
+Flannel
+
+#### qb compose
+Ansible
 
 ### Installation
 TODO
