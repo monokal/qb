@@ -97,6 +97,10 @@ class Client(object):
             required=True)
 
         # qb container commands.
+        group_container.add_argument('--list',
+                                     action='store_true',
+                                     help="List qb containers.")
+
         group_container.add_argument('--create',
                                      nargs=2,
                                      metavar=('NAME', 'IMAGE'),
@@ -215,7 +219,10 @@ class _Container(object):
         self.container = Container(self.url, self.cert, self.key)
 
         # Invoke the required function based on the provided args.
-        if args.create is not None:
+        if args.list:
+            self.list()
+
+        elif args.create is not None:
             self.create(args.create[0],  # Name.
                         args.create[1])  # Image.
 
@@ -231,6 +238,11 @@ class _Container(object):
         else:
             self.p.error("Error invoking function.")
             sys.exit(1)
+
+    def list(self):
+        """ Function to list a qb containers. """
+
+        self.container.list()
 
     def create(self, name, image):
         """ Function to create a qb container. """
