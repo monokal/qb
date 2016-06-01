@@ -2,8 +2,10 @@
 
 import logging
 import sys
+import dateutil.parser
 
 from pylxd import Client  # https://pylxd.readthedocs.io/
+from tabulate import tabulate # https://pypi.python.org/pypi/tabulate
 
 
 class Container(object):
@@ -30,7 +32,27 @@ class Container(object):
     def list(self):
         """ Function to list a qb containers. """
 
-        self.p.debug("Listing containers...")
+        # Define table headers and populate data.
+        headers = ['Name', 'State', 'Architecture', 'Created']
+        data = []
+
+        for container in self.lxd.containers.all():
+            # "container" is an impartial object so we must call fetch before
+            # any operations.
+            container.fetch()
+
+            # Format the created_at.
+            created_at = dateutil.parser.parse(container.created_at, )
+
+            data.append([container.name,
+                         container.status,
+                         container.architecture,
+                         created_at])
+
+        # Print the populated table.
+        print(tabulate(tabular_data=data,
+                       headers=headers,
+                       tablefmt='grid'))
 
     def create(self, name, image):
         """ Create a qb container. """
@@ -58,9 +80,10 @@ class Container(object):
 
         # Create the container.
         try:
-            container = self.lxd.containers.create(config, wait=True)
             self.p.info(
-                "Created %s from the %s image." % (name, image))
+                "Creating %s from the %s image..." % (name, image))
+            container = self.lxd.containers.create(config, wait=True)
+            self.p.info("Done!")
 
         except:
             self.p.error("Failed to create container.")
@@ -68,8 +91,9 @@ class Container(object):
 
         # Start the container.
         try:
-            container.start()
-            self.p.info("Started %s." % name)
+            self.p.info("Starting %s..." % name)
+            container.start(wait=True)
+            self.p.info("Done!")
 
         except:
             self.p.error("Failed to start container.")
