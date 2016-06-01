@@ -57,13 +57,22 @@ class Container(object):
         }
 
         # Create the container.
-        self.p.info("Creating \"%s\" from the \"%s\" image..." % (name, image))
-
         try:
             container = self.lxd.containers.create(config, wait=True)
+            self.p.info(
+                "Created %s from the %s image." % (name, image))
 
         except:
             self.p.error("Failed to create container.")
+            sys.exit(1)
+
+        # Start the container.
+        try:
+            container.start()
+            self.p.info("Started %s." % name)
+
+        except:
+            self.p.error("Failed to start container.")
             sys.exit(1)
 
         return container
