@@ -158,10 +158,10 @@ class _Machine(object):
         self.p = logging.getLogger('qb')
 
         # Pull out the relevant values from config.
-        # self.url = config['machine']
+        self.vagrantfile = config['machine']['vagrantfile']
 
         # Create a Machine instance.
-        self.machine = Machine()
+        self.machine = Machine(self.vagrantfile)
 
         # Invoke the required function based on the provided args.
         if args.create is not None:

@@ -1,11 +1,12 @@
 ---
 
+# qb machine config.
+machine:
+  vagrantfile: "machine/vagrant/"
+
 # qb container config.
 container:
-
-  # LXD REST API config.
   lxd_api:
-    #url:  "https://127.0.0.1:9443/1.0"
     url:  "https://127.0.0.1:9443"
     cert: "machine/vagrant/lxd/client.crt"
     key:  "machine/vagrant/lxd/client.key"
