@@ -2,10 +2,10 @@
 
 import logging
 import sys
-import dateutil.parser
 
+import dateutil.parser
 from pylxd import Client  # https://pylxd.readthedocs.io/
-from tabulate import tabulate # https://pypi.python.org/pypi/tabulate
+from tabulate import tabulate  # https://pypi.python.org/pypi/tabulate
 
 
 class Container(object):
@@ -29,11 +29,13 @@ class Container(object):
             verify=False
         )
 
+        return
+
     def list(self):
         """ Function to list a qb containers. """
 
         # Define table headers and populate data.
-        headers = ['Name', 'State', 'Architecture', 'Created']
+        headers = ['NAME', 'IMAGE', 'STATE', 'CREATED']
         data = []
 
         for container in self.lxd.containers.all():
@@ -41,23 +43,27 @@ class Container(object):
             # any operations.
             container.fetch()
 
-            # Format the created_at.
-            created_at = dateutil.parser.parse(container.created_at, )
+            # Parse and format the "created_at" timestamp.
+            parsed_created_at = dateutil.parser.parse(str(container.created_at))
+            formatted_created_at = parsed_created_at.strftime(
+                "%d/%m/%Y at %H:%M:%S")
 
             data.append([container.name,
+                         'tbc',
                          container.status,
-                         container.architecture,
-                         created_at])
+                         formatted_created_at])
 
         # Print the populated table.
         print(tabulate(tabular_data=data,
                        headers=headers,
-                       tablefmt='grid'))
+                       tablefmt='simple'))
+
+        return
 
     def create(self, name, image):
         """ Create a qb container. """
 
-        # TODO: Pull config from elsewhere using 'name'.
+        # TODO: Pull config from elsewhere using 'image'.
         # Create the LXD API JSON payload.
         config = {
             'name': '%s' % name,
@@ -74,7 +80,7 @@ class Container(object):
                 'mode': 'pull',
                 'protocol': 'simplestreams',
                 'server': 'https://cloud-images.ubuntu.com/releases',
-                'alias': '14.04'
+                'alias': '%s' % image
             }
         }
 
@@ -90,6 +96,20 @@ class Container(object):
             sys.exit(1)
 
         # Start the container.
+        self.start(name)
+
+        return
+
+    def start(self, name):
+        """ Start a qb container. """
+
+        try:
+            container = self.lxd.containers.get(name)
+
+        except:
+            self.p.error("Failed to get container.")
+            sys.exit(1)
+
         try:
             self.p.info("Starting %s..." % name)
             container.start(wait=True)
@@ -99,19 +119,32 @@ class Container(object):
             self.p.error("Failed to start container.")
             sys.exit(1)
 
-        return container
-
-    def start(self, name):
-        """ Start a qb container. """
-
-        self.p.info("Starting \"%s\"..." % name)
+        return
 
     def stop(self, name):
         """ Stop a qb container. """
 
-        self.p.debug("Stopping \"%s\"..." % name)
+        try:
+            container = self.lxd.containers.get(name)
+
+        except:
+            self.p.error("Failed to get container.")
+            sys.exit(1)
+
+        try:
+            self.p.info("Starting %s..." % name)
+            container.start(wait=True)
+            self.p.info("Done!")
+
+        except:
+            self.p.error("Failed to start container.")
+            sys.exit(1)
+
+        return
 
     def remove(self, name):
         """ Remove a qb container. """
 
         self.p.debug("Removing \"%s\"..." % name)
+
+        return

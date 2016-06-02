@@ -15,6 +15,8 @@ class Config(object):
         # Use the logger object created by Client.
         self.p = logging.getLogger('qb')
 
+        return
+
     def load(self, path):
         """ Load qb config from file. """
 
@@ -31,5 +33,6 @@ class Config(object):
 
         except:
             self.p.error("Failed to load config file (%s)." % path)
+            sys.exit(1)
 
-        sys.exit(1)
+        return

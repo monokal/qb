@@ -145,7 +145,7 @@ class Client(object):
             # and qb config.
             args.func(args, self.config)
 
-        sys.exit(0)
+        return
 
 
 class _Machine(object):
@@ -180,25 +180,35 @@ class _Machine(object):
             self.p.error("Error invoking function.")
             sys.exit(1)
 
+        return
+
     def create(self, name):
         """ Function to create a qb machine. """
 
         self.machine.create(name)
+
+        return
 
     def start(self, name):
         """ Start a qb machine. """
 
         self.machine.start(name)
 
+        return
+
     def stop(self, name):
         """ Stop a qb machine. """
 
         self.machine.stop(name)
 
+        return
+
     def remove(self, name):
         """ Remove a qb machine. """
 
         self.machine.remove(name)
+
+        return
 
 
 class _Container(object):
@@ -239,30 +249,42 @@ class _Container(object):
             self.p.error("Error invoking function.")
             sys.exit(1)
 
+        return
+
     def list(self):
         """ Function to list a qb containers. """
 
         self.container.list()
+
+        return
 
     def create(self, name, image):
         """ Function to create a qb container. """
 
         self.container.create(name, image)
 
+        return
+
     def start(self, name):
         """ Start a qb container. """
 
         self.container.start(name)
+
+        return
 
     def stop(self, name):
         """ Stop a qb container. """
 
         self.container.stop(name)
 
+        return
+
     def remove(self, name):
         """ Remove a qb container. """
 
         self.container.remove(name)
+
+        return
 
 
 if __name__ == "__main__":
