@@ -31,11 +31,23 @@ class Container(object):
 
         return
 
+    def get_container(self, name):
+        """ Function to return a container object from name. """
+
+        try:
+            container = self.lxd.containers.get(name)
+
+        except:
+            self.p.error("Failed to get container.")
+            sys.exit(1)
+
+        return container
+
     def list(self):
         """ Function to list a qb containers. """
 
         # Define table headers and populate data.
-        headers = ['NAME', 'IMAGE', 'STATE', 'CREATED']
+        headers = ['NAME', 'IMAGE', 'STATE', 'IP ADDRESS', 'CREATED']
         data = []
 
         for container in self.lxd.containers.all():
@@ -49,8 +61,9 @@ class Container(object):
                 "%d/%m/%Y at %H:%M:%S")
 
             data.append([container.name,
-                         'tbc',
+                         'todo:to.do',
                          container.status,
+                         'to.do.to.do',
                          formatted_created_at])
 
         # Print the populated table.
@@ -64,6 +77,8 @@ class Container(object):
         """ Create a qb container. """
 
         # TODO: Pull config from elsewhere using 'image'.
+        # RethinkDB, Git, Consul, etc?
+
         # Create the LXD API JSON payload.
         config = {
             'name': '%s' % name,
@@ -88,7 +103,7 @@ class Container(object):
         try:
             self.p.info(
                 "Creating %s from the %s image..." % (name, image))
-            container = self.lxd.containers.create(config, wait=True)
+            self.lxd.containers.create(config, wait=True)
             self.p.info("Done!")
 
         except:
@@ -103,12 +118,7 @@ class Container(object):
     def start(self, name):
         """ Start a qb container. """
 
-        try:
-            container = self.lxd.containers.get(name)
-
-        except:
-            self.p.error("Failed to get container.")
-            sys.exit(1)
+        container = self.get_container(name)
 
         try:
             self.p.info("Starting %s..." % name)
@@ -124,20 +134,15 @@ class Container(object):
     def stop(self, name):
         """ Stop a qb container. """
 
-        try:
-            container = self.lxd.containers.get(name)
-
-        except:
-            self.p.error("Failed to get container.")
-            sys.exit(1)
+        container = self.get_container(name)
 
         try:
-            self.p.info("Starting %s..." % name)
-            container.start(wait=True)
+            self.p.info("Stopping %s..." % name)
+            container.stop(wait=True)
             self.p.info("Done!")
 
         except:
-            self.p.error("Failed to start container.")
+            self.p.error("Failed to stop container.")
             sys.exit(1)
 
         return
@@ -145,6 +150,15 @@ class Container(object):
     def remove(self, name):
         """ Remove a qb container. """
 
-        self.p.debug("Removing \"%s\"..." % name)
+        container = self.get_container(name)
+
+        try:
+            self.p.info("Removing %s..." % name)
+            container.delete(wait=True)
+            self.p.info("Done!")
+
+        except:
+            self.p.error("Failed to remove container.")
+            sys.exit(1)
 
         return
