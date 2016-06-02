@@ -152,6 +152,10 @@ class Container(object):
 
         container = self.get_container(name)
 
+        # The container must first be stopped before removal.
+        if container.status != 'Stopped':
+            self.stop(name)
+
         try:
             self.p.info("Removing %s..." % name)
             container.delete(wait=True)

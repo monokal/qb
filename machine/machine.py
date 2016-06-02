@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 
 import logging
+import sys
 
-import vagrant
+from vagrant import Vagrant  # https://github.com/todddeluca/python-vagrant
 
 
 class Machine(object):
@@ -15,14 +16,21 @@ class Machine(object):
         self.p = logging.getLogger('qb')
 
         # Create a Vagrant object.
-        self.v = vagrant.Vagrant()
+        self.vagrant = Vagrant()
+
+        return
 
     def create(self, name):
         """ Create a qb machine. """
 
-        self.p.debug("Creating \"%s\"." % name)
+        try:
+            self.p.info("Creating \"%s\"..." % name)
+            self.vagrant.up(vm_name=name)
+            self.p.info('Done!')
 
-        # self.v.up(vm_name="%s" % args.NAME)
+        except:
+            self.p.error("Failed to create machine.")
+            sys.exit(1)
 
     def start(self, name):
         """ Start a qb machine. """
