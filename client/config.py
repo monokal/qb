@@ -31,7 +31,8 @@ class Config(object):
 
             return config_dict
 
-        except:
+        except Exception as e:
+            self.p.debug(e)
             self.p.error("Failed to load config file (%s)." % path)
             sys.exit(1)
 

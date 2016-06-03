@@ -37,7 +37,8 @@ class Container(object):
         try:
             container = self.lxd.containers.get(name)
 
-        except:
+        except Exception as e:
+            self.p.debug(e)
             self.p.error("Failed to get container.")
             sys.exit(1)
 
@@ -106,7 +107,8 @@ class Container(object):
             self.lxd.containers.create(config, wait=True)
             self.p.info("Done!")
 
-        except:
+        except Exception as e:
+            self.p.debug(e)
             self.p.error("Failed to create container.")
             sys.exit(1)
 
@@ -125,7 +127,8 @@ class Container(object):
             container.start(wait=True)
             self.p.info("Done!")
 
-        except:
+        except Exception as e:
+            self.p.debug(e)
             self.p.error("Failed to start container.")
             sys.exit(1)
 
@@ -141,7 +144,8 @@ class Container(object):
             container.stop(wait=True)
             self.p.info("Done!")
 
-        except:
+        except Exception as e:
+            self.p.debug(e)
             self.p.error("Failed to stop container.")
             sys.exit(1)
 
@@ -161,7 +165,8 @@ class Container(object):
             container.delete(wait=True)
             self.p.info("Done!")
 
-        except:
+        except Exception as e:
+            self.p.debug(e)
             self.p.error("Failed to remove container.")
             sys.exit(1)
 

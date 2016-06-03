@@ -177,7 +177,7 @@ class _Machine(object):
             self.remove(args.remove[0])
 
         else:
-            self.p.error("Error invoking function.")
+            self.p.error("Failed to invoke function.")
             sys.exit(1)
 
         return
