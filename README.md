@@ -8,19 +8,10 @@ qb (pronounced "*cube*") is a cross-platform toolkit for **system containers** i
 
 ### Tools
 #### qb machine
-Vagrant
-
 #### qb container
-LXD
-
 #### qb registry
-LXD Image Store
-
 #### qb network
-Flannel
-
 #### qb compose
-Ansible
 
 ### Installation
 TODO
