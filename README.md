@@ -11,7 +11,7 @@ qb (pronounced "*cube*") is a cross-platform toolkit for **system containers** i
 The qb command-line client is a tool to manage all of the components listed below. It's designed to be intuitive, user-friendly and inherits a lot from the design decisions Docker have implemented in their hugely successful production-ready container infrastructure stack.
 
 #### qb machine
-A qb machine is a very minimal, light-weight Linux virtual Machine (VM) created to provide a consistent base environment on which as few or any many qb containers can be run as you wish, and that's it.
+A qb machine is a very minimal, light-weight Linux virtual Machine (VM) created to provide a consistent base environment on which as few or as many qb containers can be run as you wish, and that's it.
 The primary use of qb machine is to allow users to run qb containers on their local machines regardless of operating system or configuration. It provides two core dependencies, the Linux kernel, and the LXD API which the qb client calls to manage containers.
 
 #### qb container
