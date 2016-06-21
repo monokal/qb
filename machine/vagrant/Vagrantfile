@@ -19,19 +19,16 @@ Vagrant.configure(2) do |config|
     # Set the VM hostname.
     config.vm.hostname = "qb-machine"
     
-    # Use a very minimal Ubuntu Trusty box.
-    config.vm.box = "ubuntu/trusty64"
+    # Use a very minimal Ubuntu Xenial box.
+    config.vm.box = "geerlingguy/ubuntu1604"
 
     # Bind the LXD REST API to localhost.
     config.vm.network "forwarded_port", guest: 8443, host: 9443
 
     config.vm.provision "shell", inline: <<-SHELL
         export DEBIAN_FRONTEND=noninteractive
-        
+
         # Install LXD.
-        sudo apt-get update
-        sudo apt-get -y install software-properties-common
-        sudo add-apt-repository -y ppa:ubuntu-lxc/lxd-git-master
         sudo apt-get update
         sudo apt-get -y install lxd
 
