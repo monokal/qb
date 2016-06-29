@@ -1,23 +1,23 @@
 # Ideas
 This is just a scrapbook of ideas and notes around the development of qb.
 
-## Technologies/Tooling/Modules
+### Technologies/Tooling/Modules
 
-### client
+#### client
 -
 
-### qb machine
+#### qb machine
 - [Apache Libcloud](https://libcloud.apache.org/)
 
-### qb container
+#### qb container
 - [pylxd](https://pylxd.readthedocs.io/en/latest/)
 - [libvirt](http://libvirt.org/)
 
-### qb registry
+#### qb registry
 - [LXD image server](https://github.com/lxc/lxd/)
 
-### qb network
+#### qb network
 - [Flannel](https://github.com/coreos/flannel/)
 
-### qb compose
+#### qb compose
 - [Ansible](https://www.ansible.com/)
