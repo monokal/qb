@@ -21,3 +21,8 @@ This is just a scrapbook of ideas and notes around the development of qb.
 
 #### qb compose
 - [Ansible](https://www.ansible.com/)
+
+#### qb swarm
+- [Mesosphere DCOS](https://dcos.io/)
+- [Hashicorp Nomad](https://www.hashicorp.com/blog/nomad.html)
+- [Kubernetes with LXD support?](https://github.com/kubernetes/kubernetes/issues/6862)
