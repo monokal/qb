@@ -57,7 +57,9 @@ class Client(object):
         # Create a sub-parser for qb sub-commands.
         subparsers = parser.add_subparsers()
 
-        # qb machine sub-parser.
+        #
+        # Start qb machine commands.
+        #
         parser_machine = subparsers.add_parser('machine',
                                                aliases=['m'],
                                                help="Manage a qb machine.")
@@ -65,9 +67,6 @@ class Client(object):
         group_machine = parser_machine.add_mutually_exclusive_group(
             required=True)
 
-        # qb machine commands.
-        # TODO: Maybe generate the below args by iterating through a
-        # FUNC_DICT as there's a fair amount of duplication.
         group_machine.add_argument('--create',
                                    nargs=1,
                                    metavar='NAME',
@@ -88,7 +87,14 @@ class Client(object):
                                    metavar='NAME',
                                    help="Remove a qb machine.")
 
-        # qb container sub-parser.
+        parser_machine.set_defaults(func=_Machine)
+        #
+        # End qb machine commands.
+        #
+
+        #
+        # Start qb container commands.
+        #
         parser_container = subparsers.add_parser('container',
                                                  aliases=['c'],
                                                  help="Manage a qb container.")
@@ -96,7 +102,6 @@ class Client(object):
         group_container = parser_container.add_mutually_exclusive_group(
             required=True)
 
-        # qb container commands.
         group_container.add_argument('--list',
                                      action='store_true',
                                      help="List qb containers.")
@@ -121,9 +126,10 @@ class Client(object):
                                      metavar='NAME',
                                      help="Remove a qb container.")
 
-        # Set functions for the sub-parsers to call.
-        parser_machine.set_defaults(func=_Machine)
         parser_container.set_defaults(func=_Container)
+        #
+        # End qb container commands.
+        #
 
         # Print help if no arg was provided, otherwise parse args and call the
         # relevant function.
