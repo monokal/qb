@@ -78,7 +78,7 @@ class Container(object):
         """ Create a qb container. """
 
         # TODO: Pull config from elsewhere using 'image'.
-        # RethinkDB, Git, Consul, etc?
+        # Consul, Etcd, etc?
 
         # Create the LXD API JSON payload.
         config = {

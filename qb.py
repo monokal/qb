@@ -136,20 +136,20 @@ class Client(object):
         if len(sys.argv) <= 1:
             parser.print_help()
             sys.exit(1)
-        else:
-            args = parser.parse_args()
 
-            if args.debug:
-                self.p.setLevel(logging.DEBUG)
-                self.p.debug("Debug mode is on.")
+        args = parser.parse_args()
 
-            # Create a Config instance and load configuration from file.
-            config = Config()
-            self.config = config.load(config_path)
+        if args.debug:
+            self.p.setLevel(logging.DEBUG)
+            self.p.debug("Debug mode is on.")
 
-            # Invoke the required function, passing it the parsed arguments
-            # and qb config.
-            args.func(args, self.config)
+        # Create a Config instance and load configuration from file.
+        config = Config()
+        self.config = config.load(config_path)
+
+        # Invoke the required function, passing it the parsed arguments
+        # and qb config.
+        args.func(args, self.config)
 
         return
 
